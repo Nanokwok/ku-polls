@@ -12,3 +12,9 @@ https://cpske.github.io/ISP) course at [Kasetsart University](https://www.ku.ac.
 ## Running the Application
 
 ## Project Documents
+
+All project documents are in the [Project Wiki](../../wiki/Home).
+
+- [Vision Statement](../../wiki/Vision%20and%20Scope)
+- [Requirements](../../wiki/Requirements)
+- [Project Plan](../../wiki/Project%20Plan)
