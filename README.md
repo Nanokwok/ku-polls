@@ -7,6 +7,9 @@ additional features.
 This app was created as part of the [Individual Software Process](
 https://cpske.github.io/ISP) course at [Kasetsart University](https://www.ku.ac.th).
 
+## Installation
+[Installation](https://github.com/Nanokwok/ku-polls/wiki/Installation) for how to install and run the server
+
 ## Run the server
 1. Change directory to the project root
 ```cd ku-polls```
