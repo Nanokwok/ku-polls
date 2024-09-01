@@ -6,9 +6,14 @@
 <div class="results-container">
     <h1>{{ question.question_text }}</h1>
 
-    <ul>
+    <ul class="results-list">
     {% for choice in question.choice_set.all %}
-        <li>{{ choice.choice_text }} {{ choice.votes }}</li>
+        <li class="result-item">
+            <span class="choice-text">{{ choice.choice_text }}</span>
+            <span class="votes-count">
+                {{ choice.votes }} vote{% if choice.votes != 1 and choice.votes != 0 %}s{% endif %}
+            </span>
+        </li>
     {% endfor %}
     </ul>
 

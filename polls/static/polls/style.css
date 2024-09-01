@@ -169,6 +169,9 @@ body {
     background: rgba(255, 255, 255, 0.2);
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .results-container .navigation-links {
@@ -227,4 +230,3 @@ body {
     justify-content: flex-start;
     gap: 10px;
 }
-
