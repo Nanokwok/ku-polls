@@ -87,4 +87,6 @@ def vote(request, question_id):
         selected_choice.save()
         request.session[f'voted_for_question_{question_id}'] = True
         # Redirect to the results page after successfully voting.
-        return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
+        return HttpResponseRedirect(reverse(
+            'polls:results',
+            args=(question.id,)))

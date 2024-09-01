@@ -1,4 +1,3 @@
-from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
 
@@ -20,9 +19,6 @@ class Question(models.Model):
         if self.end_date:
             return self.pub_date <= now <= self.end_date
         return self.pub_date <= now
-
-    def has_user_voted(self, user):
-        return Vote.objects.filter(choice__question=self, user=user).exists()
 
     def __str__(self):
         return self.question_text

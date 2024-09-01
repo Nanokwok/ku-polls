@@ -24,14 +24,18 @@ class QuestionIndexViewTests(TestCase):
         response = self.client.get(reverse("polls:index"))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "No polls are available.")
-        self.assertQuerysetEqual(response.context["latest_question_list"], [])
+        self.assertListEqual(list(
+            response.context["latest_question_list"]),
+            [])
 
     def test_future_question(self):
         """
         The detail view of a question with a pub_date in the future
         returns a 302 not found.
         """
-        future_question = create_question(question_text="Future question.", days=5)
+        future_question = create_question(
+            question_text="Future question.",
+            days=5)
         url = reverse("polls:detail", args=(future_question.id,))
         response = self.client.get(url)
         self.assertEqual(response.status_code, 302)
@@ -41,7 +45,9 @@ class QuestionIndexViewTests(TestCase):
         The detail view of a question with a pub_date in the past
         displays the question's text.
         """
-        past_question = create_question(question_text="Past Question.", days=-5)
+        past_question = create_question(
+            question_text="Past Question.",
+            days=-5)
         url = reverse("polls:detail", args=(past_question.id,))
         response = self.client.get(url)
         self.assertContains(response, past_question.question_text)
@@ -54,10 +60,9 @@ class QuestionIndexViewTests(TestCase):
         question = create_question(question_text="Past question.", days=-30)
         create_question(question_text="Future question.", days=30)
         response = self.client.get(reverse("polls:index"))
-        self.assertQuerysetEqual(
-            response.context["latest_question_list"],
-            [question],
-            transform=lambda x: x  # Make sure the query set elements are compared correctly
+        self.assertListEqual(
+            list(response.context["latest_question_list"]),
+            [question]
         )
 
     def test_two_past_questions(self):
@@ -67,17 +72,17 @@ class QuestionIndexViewTests(TestCase):
         question1 = create_question(question_text="Past question 1.", days=-30)
         question2 = create_question(question_text="Past question 2.", days=-5)
         response = self.client.get(reverse("polls:index"))
-        self.assertQuerysetEqual(
-            response.context["latest_question_list"],
-            [question2, question1],
-            transform=lambda x: x
+        self.assertListEqual(
+            list(response.context["latest_question_list"]),
+            [question2, question1]
         )
 
 
 class QuestionModelTests(TestCase):
     def test_is_published_future_date(self):
         """Questions with a future pub_date are not published."""
-        future_question = Question(pub_date=timezone.now() + timedelta(days=30))
+        future_question = Question(
+            pub_date=timezone.now() + timedelta(days=30))
         self.assertFalse(future_question.is_published())
 
     def test_is_published_default_date(self):
@@ -92,7 +97,8 @@ class QuestionModelTests(TestCase):
 
     def test_can_vote_before_pub_date(self):
         """Cannot vote if the current date is before the pub_date."""
-        future_question = Question(pub_date=timezone.now() + timedelta(days=30))
+        future_question = Question(
+            pub_date=timezone.now() + timedelta(days=30))
         self.assertFalse(future_question.can_vote())
 
     def test_can_vote_between_pub_and_end_date(self):
@@ -110,3 +116,10 @@ class QuestionModelTests(TestCase):
             end_date=timezone.now() - timedelta(days=1)
         )
         self.assertFalse(past_question.can_vote())
+
+    def test_can_vote_without_end_date(self):
+        """Can vote if there is no end_date and pub_date is in the past."""
+        question = Question(
+            pub_date=timezone.now() - timedelta(days=1)
+        )
+        self.assertTrue(question.can_vote())
