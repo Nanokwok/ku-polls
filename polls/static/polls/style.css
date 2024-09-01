@@ -191,3 +191,40 @@ body {
     background-color: #45a049;
 }
 
+.btn {
+    display: inline-block;
+    padding: 10px 15px;
+    margin: 5px;
+    text-align: center;
+    text-decoration: none;
+    color: white;
+    background-color: #007BFF;
+    border-radius: 5px;
+    transition: background-color 0.3s, opacity 0.3s;
+}
+
+.vote-btn {
+    background-color: #28a745;
+}
+
+.result-btn {
+    background-color: #6c757d;
+}
+
+.btn:hover {
+    opacity: 0.8;
+}
+
+.green-frame {
+    border: 2px solid #28a745;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+}
+
+.button-container {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+}
+
