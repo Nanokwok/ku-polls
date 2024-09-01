@@ -21,6 +21,11 @@ https://cpske.github.io/ISP) course at [Kasetsart University](https://www.ku.ac.
 ```Ctrl-C``` (Windows)  
 ```Control-C``` (MacOS, Linux)
 
+## Demo Admin Account
+| Username | Password |
+|----------|----------|
+| admin    | P@ssword1234|
+
 ## Project Documents
 
 All project documents are in the [Project Wiki](../../wiki/Home).
