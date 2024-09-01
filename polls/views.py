@@ -26,11 +26,14 @@ class DetailView(generic.DetailView):
     model = Question
     template_name = "polls/detail.html"
 
-    def get_object(self):
-        question = super().get_object()
-        if question.pub_date > timezone.now():
-            raise Http404("Question does not exist")
-        return question
+    def get_object(self, queryset=None):
+        try:
+            question = super().get_object(queryset)
+            if question.pub_date > timezone.now():
+                raise Http404("Poll does not exist")
+            return question
+        except Http404:
+            raise Http404("The requested poll does not exist.")
 
     def get(self, request, *args, **kwargs):
         try:
@@ -39,7 +42,8 @@ class DetailView(generic.DetailView):
                 messages.error(request, "Voting is not allowed for this poll.")
                 return HttpResponseRedirect(reverse('polls:index'))
             return super().get(request, *args, **kwargs)
-        except Http404:
+        except Http404 as e:
+            messages.error(request, str(e))
             return HttpResponseRedirect(reverse('polls:index'))
 
 

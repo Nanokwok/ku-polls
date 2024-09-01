@@ -7,6 +7,16 @@
     <h1>KU Polls</h1>
 </div>
 
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li class="message-item{% if message.tags %} {{ message.tags }}{% endif %}">
+        {{ message }}
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
+
 {% if latest_question_list %}
     <div class="questions-container">
         {% for question in latest_question_list %}

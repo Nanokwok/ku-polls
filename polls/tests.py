@@ -72,6 +72,7 @@ class QuestionIndexViewTests(TestCase):
             [question2, question1],
         )
 
+
 class QuestionModelTests(TestCase):
     def test_is_published_future_date(self):
         """Questions with a future pub_date are not published."""

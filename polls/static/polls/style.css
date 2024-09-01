@@ -62,3 +62,42 @@ body {
     border-radius: 10px;
 }
 
+/* New Styles for Messages */
+.messages {
+    list-style-type: none;
+    padding: 0;
+    margin: 20px 0;
+}
+
+.message-item {
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    border-left: 4px solid #ffffff;
+    font-size: 1.1rem;
+    color: #000;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.message-item.success {
+    border-left-color: #4CAF50;
+}
+
+.message-item.error {
+    border-left-color: #F44336;
+}
+
+.message-item.info {
+    border-left-color: #2196F3;
+}
+
+.message-item.warning {
+    border-left-color: #FF9800;
+}
+
+.message-item:hover {
+    transform: translateX(10px);
+    background-color: rgba(255, 255, 255, 1);
+}
