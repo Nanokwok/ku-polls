@@ -27,6 +27,10 @@ class DetailView(generic.DetailView):
     template_name = "polls/detail.html"
 
     def get_object(self, queryset=None):
+        """
+        Return the question object, raising a 404 error if the poll is not
+        yet published or does not exist.
+        """
         try:
             question = super().get_object(queryset)
             if question.pub_date > timezone.now():
@@ -36,6 +40,10 @@ class DetailView(generic.DetailView):
             raise Http404("The requested poll does not exist.")
 
     def get(self, request, *args, **kwargs):
+        """
+        Handle GET requests, redirecting with an error message if the poll
+        is not available for voting.
+        """
         try:
             question = self.get_object()
             if not question.can_vote():
@@ -53,6 +61,7 @@ class ResultsView(generic.DetailView):
 
 
 def vote(request, question_id):
+    """Handle voting for a particular choice in a poll."""
     question = get_object_or_404(Question, pk=question_id)
     if not question.can_vote():
         messages.error(request, "Voting is not allowed for this poll.")
@@ -61,7 +70,7 @@ def vote(request, question_id):
     try:
         selected_choice = question.choice_set.get(pk=request.POST['choice'])
     except (KeyError, Choice.DoesNotExist):
-        # Redisplay the question voting form.
+        # Redisplay the question voting form with an error message.
         return render(request, 'polls/detail.html', {
             'question': question,
             'error_message': "You didn't select a choice.",
@@ -69,7 +78,5 @@ def vote(request, question_id):
     else:
         selected_choice.votes += 1
         selected_choice.save()
-        # Always return an HttpResponseRedirect after successfully dealing
-        # with POST data. This prevents data from being posted twice if a
-        # user hits the Back button.
+        # Redirect to the results page after successfully voting.
         return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
