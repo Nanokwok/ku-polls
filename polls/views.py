@@ -63,9 +63,16 @@ class ResultsView(generic.DetailView):
 def vote(request, question_id):
     """Handle voting for a particular choice in a poll."""
     question = get_object_or_404(Question, pk=question_id)
-    if not question.can_vote():
-        messages.error(request, "Voting is not allowed for this poll.")
-        return HttpResponseRedirect(reverse('polls:index'))
+
+    if request.session.get(f'voted_for_question_{question_id}'):
+        return render(
+            request,
+            "polls/detail.html",
+            {
+                "question": question,
+                "error_message": "You have already voted for this question.",
+            },
+        )
 
     try:
         selected_choice = question.choice_set.get(pk=request.POST['choice'])
@@ -78,5 +85,6 @@ def vote(request, question_id):
     else:
         selected_choice.votes += 1
         selected_choice.save()
+        request.session[f'voted_for_question_{question_id}'] = True
         # Redirect to the results page after successfully voting.
         return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
