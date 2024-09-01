@@ -1,2 +1,2 @@
-Django<5.0,>=4.1
+Django
 python-decouple>=3
