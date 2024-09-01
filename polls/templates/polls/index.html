@@ -22,6 +22,22 @@
         {% for question in latest_question_list %}
             <div class="question-frame">
                 <a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a>
+                <p>
+                    Status:
+                    {% if question.can_vote %}
+                        Voting is open.
+                    {% elif not question.is_published %}
+                        Poll not published yet.
+                    {% else %}
+                        Voting is closed.
+                    {% endif %}
+                </p>
+                <div class="button-container">
+                    {% if question.can_vote %}
+                        <a href="{% url 'polls:detail' question.id %}" class="btn vote-btn">Vote</a>
+                    {% endif %}
+                    <a href="{% url 'polls:results' question.id %}" class="btn result-btn">Results</a>
+                </div>
             </div>
         {% endfor %}
     </div>
