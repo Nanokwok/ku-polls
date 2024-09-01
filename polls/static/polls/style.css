@@ -1,3 +1,18 @@
+body {
+    background: white url("images/background.jpg") no-repeat;
+    background-size: cover;
+    font-family: 'Montserrat', Arial, sans-serif;
+    color: white;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 10px;
+}
+
 .title-container {
     text-align: center;
     margin: 20px 0;
@@ -47,57 +62,132 @@
     color: #bdffb0;
 }
 
-body {
-    background: white url("images/background.jpg") no-repeat;
-    background-size: cover;
+.navigation-links {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.back-link, .results-link {
+    display: inline-block;
+    padding: 10px 15px;
+    margin: 5px;
+    background-color: #4CAF50;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+.back-link:hover, .results-link:hover {
+    background-color: #45a049;
+}
+
+.detail-container {
+    max-width: 700px;
+    margin: 30px auto;
+    padding: 30px;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+}
+
+.detail-container h1 {
+    font-size: 2.5rem;
+    color: #ffffff;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.detail-container label {
+    font-size: 1.2rem;
+    color: #ffffff;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.detail-container input[type="radio"] {
+    margin-right: 10px;
+}
+
+.detail-container .vote-button {
+    display: block;
+    width: 100%;
+    margin: 20px auto 0;
+    padding: 15px;
+    font-size: 1.2rem;
     font-family: 'Montserrat', Arial, sans-serif;
+    background-color: #4CAF50;
     color: white;
-}
-
-.container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: rgba(0, 0, 0, 0.6);
+    border: none;
     border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
-/* New Styles for Messages */
+.detail-container .vote-button:hover {
+    background-color: #307333;
+}
+
 .messages {
     list-style-type: none;
     padding: 0;
-    margin: 20px 0;
 }
 
 .message-item {
-    background-color: rgba(255, 255, 255, 0.8);
-    padding: 10px;
+    margin: 5px 0;
+}
+
+.results-container {
+    max-width: 700px;
+    margin: 30px auto;
+    padding: 30px;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(15px);
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.results-container h1 {
+    font-size: 2.5rem;
+    color: #ffffff;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.results-container ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.results-container li {
+    font-size: 1.2rem;
+    color: #ffffff;
     margin-bottom: 10px;
-    border-radius: 8px;
-    border-left: 4px solid #ffffff;
-    font-size: 1.1rem;
-    color: #000;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.message-item.success {
-    border-left-color: #4CAF50;
+.results-container .navigation-links {
+    margin-top: 20px;
+    text-align: center;
 }
 
-.message-item.error {
-    border-left-color: #F44336;
+.results-container .back-link {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #4CAF50;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
 }
 
-.message-item.info {
-    border-left-color: #2196F3;
+.results-container .back-link:hover {
+    background-color: #45a049;
 }
 
-.message-item.warning {
-    border-left-color: #FF9800;
-}
-
-.message-item:hover {
-    transform: translateX(10px);
-    background-color: rgba(255, 255, 255, 1);
-}
