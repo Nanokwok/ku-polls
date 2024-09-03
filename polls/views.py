@@ -4,6 +4,7 @@ from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 from .models import Choice, Question
 
@@ -60,19 +61,10 @@ class ResultsView(generic.DetailView):
     template_name = "polls/results.html"
 
 
+@login_required
 def vote(request, question_id):
     """Handle voting for a particular choice in a poll."""
     question = get_object_or_404(Question, pk=question_id)
-
-    if request.session.get(f'voted_for_question_{question_id}'):
-        return render(
-            request,
-            "polls/detail.html",
-            {
-                "question": question,
-                "error_message": "You have already voted for this question.",
-            },
-        )
 
     try:
         selected_choice = question.choice_set.get(pk=request.POST['choice'])
