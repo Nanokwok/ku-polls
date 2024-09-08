@@ -1,3 +1,7 @@
+import logging
+
+from django.contrib.auth import user_logged_in, user_logged_out, user_login_failed
+from django.dispatch import receiver
 from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
@@ -7,6 +11,23 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
 from .models import Choice, Question, Vote
+
+logger = logging.getLogger('polls')
+
+
+@receiver(user_logged_in)
+def user_logged_in_handler(sender, request, user, **kwargs):
+    logger.info(f'User {user.username} logged in from IP {get_client_ip(request)}.')
+
+
+@receiver(user_logged_out)
+def user_logged_out_handler(sender, request, user, **kwargs):
+    logger.info(f'User {user.username} logged out from IP {get_client_ip(request)}.')
+
+
+@receiver(user_login_failed)
+def user_logged_in_fail_handler(sender, request, **kwargs):
+    logger.warning(f' Failed login from IP {get_client_ip(request)}.')
 
 
 class IndexView(generic.ListView):
@@ -94,3 +115,13 @@ def vote(request, question_id):
 
     messages.success(request, f"Your vote for '{selected_choice}' has been recorded.")
     return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
+
+
+def get_client_ip(request):
+    """Get the client's IP address from the request."""
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    return ip
