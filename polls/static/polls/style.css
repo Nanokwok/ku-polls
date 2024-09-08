@@ -5,6 +5,13 @@ body {
     color: white;
 }
 
+header {
+    width: 100%;
+    height: 60px;
+    background: transparent;
+    position: fixed;
+}
+
 .container {
     max-width: 800px;
     margin: 0 auto;
@@ -67,7 +74,7 @@ body {
     text-align: center;
 }
 
-.back-link, .results-link {
+.button, .results-link {
     display: inline-block;
     padding: 10px 15px;
     margin: 5px;
@@ -79,7 +86,7 @@ body {
     transition: background-color 0.3s ease;
 }
 
-.back-link:hover, .results-link:hover {
+.button:hover, .results-link:hover {
     background-color: #45a049;
 }
 
@@ -179,7 +186,7 @@ body {
     text-align: center;
 }
 
-.results-container .back-link {
+.results-container .button {
     display: inline-block;
     padding: 10px 15px;
     background-color: #4CAF50;
@@ -190,7 +197,7 @@ body {
     transition: background-color 0.3s ease;
 }
 
-.results-container .back-link:hover {
+.results-container .button:hover {
     background-color: #45a049;
 }
 
@@ -259,7 +266,7 @@ body {
 .message-item.success {
     background-color: rgba(0, 255, 0, 0.2);
     border-left: 5px solid #4CAF50;
-    color: #4CAF50;
+    color: #ffffff;
 }
 
 .message-item.success:hover {
@@ -377,3 +384,7 @@ input[type="password"]:focus {
 .logout-form {
     margin-left: auto;
 }
+
+/*.auth-buttons {*/
+/*    display: flex;*/
+/*}*/

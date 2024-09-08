@@ -3,6 +3,21 @@
 <link rel="stylesheet" href="{% static 'polls/style.css' %}">
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 
+<header>
+    <div class="header-container">
+        <div class="auth-buttons">
+            {% if user.is_authenticated %}
+                <form action="{% url 'logout' %}" method="post" class="logout-form">
+                    {% csrf_token %}
+                    <button type="submit" class="button">Logout</button>
+                </form>
+            {% else %}
+                <a href="{% url 'login' %}?next={{ request.path }}" class="button">Login</a>
+            {% endif %}
+        </div>
+    </div>
+</header>
+
 {% if messages %}
     <ul class="messages">
         {% for message in messages %}
@@ -25,7 +40,8 @@
             {% endif %}
             {% for choice in question.choice_set.all %}
                 <label>
-                    <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
+                    <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}"
+                    {% if user_vote and user_vote.choice.id == choice.id %}checked{% endif %}>
                     {{ choice.choice_text }}
                 </label>
             {% endfor %}
@@ -36,5 +52,5 @@
 
 <div class="navigation-links">
     <a href="{% url 'polls:results' question.id %}" class="results-link">View Results</a>
-    <a href="{% url 'polls:index' %}" class="back-link">Back to List of Polls</a>
+    <a href="{% url 'polls:index' %}" class="button">Back to List of Polls</a>
 </div>

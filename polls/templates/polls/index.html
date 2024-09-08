@@ -3,6 +3,21 @@
 <link rel="stylesheet" href="{% static 'polls/style.css' %}">
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 
+<header>
+    <div class="header-container">
+        <div class="auth-buttons">
+            {% if user.is_authenticated %}
+                <form action="{% url 'logout' %}" method="post" class="logout-form">
+                    {% csrf_token %}
+                    <button type="submit" class="button">Logout</button>
+                </form>
+            {% else %}
+                <a href="{% url 'login' %}?next={{ request.path }}" class="button">Login</a>
+            {% endif %}
+        </div>
+    </div>
+</header>
+
 <div class="main-container">
     <div class="content-container">
         <div class="title-container">
