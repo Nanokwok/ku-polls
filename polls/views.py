@@ -42,14 +42,28 @@ class DetailView(generic.DetailView):
         is not available for voting.
         """
         try:
-            question = self.get_object()
-            if not question.can_vote():
-                messages.error(request, "Voting is not allowed for this poll.")
-                return HttpResponseRedirect(reverse('polls:index'))
-            return super().get(request, *args, **kwargs)
-        except Http404 as e:
-            messages.error(request, str(e))
+            self.object = self.get_object()
+        except Http404:
+            messages.error(request, "Poll not found.")
             return HttpResponseRedirect(reverse('polls:index'))
+
+        question = get_object_or_404(Question, pk=kwargs['pk'])
+        user = request.user
+
+        if user.is_authenticated:
+            try:
+                selected_choice = question.choice_set.get(vote__user=user)
+            except Choice.DoesNotExist:
+                selected_choice = None
+
+            context = {
+                'question': question,
+                'selected_choice': selected_choice,
+            }
+            return render(request, 'polls/detail.html', context)
+        else:
+            context = self.get_context_data(object=self.object)
+            return self.render_to_response(context)
 
 
 class ResultsView(generic.DetailView):
