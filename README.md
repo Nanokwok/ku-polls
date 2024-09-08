@@ -26,6 +26,13 @@ https://cpske.github.io/ISP) course at [Kasetsart University](https://www.ku.ac.
 |----------|----------|
 | admin    | P@ssword1234|
 
+## Super User Account
+| Username | Password |
+|----------|----------|
+| demo1    | hackme11 |
+| demo2    | hackme22 |
+| demo3    | hackme33 |
+
 ## Project Documents
 
 All project documents are in the [Project Wiki](../../wiki/Home).
