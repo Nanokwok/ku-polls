@@ -74,11 +74,26 @@ def vote(request, question_id):
             'question': question,
             'error_message': "You didn't select a choice.",
         })
-    else:
-        selected_choice.votes += 1
-        selected_choice.save()
-        request.session[f'voted_for_question_{question_id}'] = True
-        # Redirect to the results page after successfully voting.
-        return HttpResponseRedirect(reverse(
-            'polls:results',
-            args=(question.id,)))
+    # if the user has a vote:
+    #     change the vote
+    #     save the vote
+    # else:
+    #     create a new vote
+    #     save the vote
+    #
+
+    # if request.user.votes_set.filter(choice__question=question).exists():
+    #     vote = request.user.votes_set.get(choice__question=question)
+    #     vote.choice = selected_choice
+    #     vote.save()
+    # else:
+    #     vote = Votes(choice=selected_choice, user=request.user)
+    #     vote.save()
+
+    selected_choice.votes += 1
+    selected_choice.save()
+    request.session[f'voted_for_question_{question_id}'] = True
+    # Redirect to the results page after successfully voting.
+    return HttpResponseRedirect(reverse(
+        'polls:results',
+        args=(question.id,)))

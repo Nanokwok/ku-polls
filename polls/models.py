@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth.models import User
 
 
 class Question(models.Model):
@@ -31,4 +32,26 @@ class Choice(models.Model):
 
     def __str__(self):
         return self.choice_text
+
+
+# class Votes(models.Model):
+#     """Model to store the votes of users."""
+#
+#     choice = models.ForeignKey(Choice, on_delete=models.CASCADE)
+#     user = models.ForeignKey(User, on_delete=models.CASCADE)
+#
+#     def __init__(self, *args, **kwargs):
+#         super().__init__(args, kwargs)
+#         self.votes_set = None
+#
+#     @property
+#     def votes(self):
+#         """Return the number of votes."""
+#         return self.votes_set.count()
+#
+#
+#     def __str__(self):
+#         """Return the user who voted."""
+#         return self.user
+
 
