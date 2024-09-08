@@ -1,9 +1,14 @@
 import datetime
+
+import django
+from django.contrib.auth.models import User
 from django.test import TestCase
 from django.utils import timezone
 from django.urls import reverse
 from datetime import timedelta
-from .models import Question
+
+from mysite import settings
+from .models import Question, Choice
 
 
 def create_question(question_text, days):
@@ -123,3 +128,87 @@ class QuestionModelTests(TestCase):
             pub_date=timezone.now() - timedelta(days=1)
         )
         self.assertTrue(question.can_vote())
+
+
+class UserAuthTest(django.test.TestCase):
+
+    def setUp(self):
+        """Set up a user, question, and choices for testing."""
+        super().setUp()
+        self.username = "testuser"
+        self.password = "FatChance!"
+        self.user1 = User.objects.create_user(
+            username=self.username,
+            password=self.password,
+            email="testuser@nowhere.com"
+        )
+        self.user1.first_name = "Tester"
+        self.user1.save()
+
+        # Create a question and a few choices
+        self.question = Question.objects.create(question_text="First Poll Question")
+        self.choice1 = Choice.objects.create(question=self.question, choice_text="Choice 1")
+        self.choice2 = Choice.objects.create(question=self.question, choice_text="Choice 2")
+
+    def test_logout(self):
+        """A user can logout using the logout URL."""
+        logout_url = reverse("logout")
+        self.assertTrue(self.client.login(username=self.username, password=self.password))
+
+        response = self.client.post(logout_url)
+        self.assertEqual(302, response.status_code)
+        self.assertRedirects(response, reverse(settings.LOGOUT_REDIRECT_URL))
+
+    def test_login_view(self):
+        """A user can login using the login view."""
+        login_url = reverse("login")
+        response = self.client.get(login_url)
+        self.assertEqual(200, response.status_code)
+
+        form_data = {"username": self.username, "password": self.password}
+        response = self.client.post(login_url, form_data)
+        self.assertEqual(302, response.status_code)
+        self.assertRedirects(response, reverse(settings.LOGIN_REDIRECT_URL))
+
+    def test_auth_required_to_vote(self):
+        """Authentication is required to submit a vote."""
+        vote_url = reverse('polls:vote', args=[self.question.id])
+        form_data = {"choice": f"{self.choice1.id}"}
+        response = self.client.post(vote_url, form_data)
+        self.assertEqual(response.status_code, 302)
+        login_with_next = f"{reverse('login')}?next={vote_url}"
+        self.assertRedirects(response, login_with_next)
+
+
+    def test_authenticated_user_can_vote(self):
+        """Authenticated users can vote on a poll."""
+        self.client.login(username=self.username, password=self.password)
+        vote_url = reverse("polls:vote", args=(self.question.id,))
+        response = self.client.post(vote_url, {'choice': self.choice1.id})
+        self.assertEqual(response.status_code, 302)
+        self.assertIn('results', response.url)
+
+    def test_user_can_vote_only_once(self):
+        """Authenticated users can only vote once."""
+        self.client.login(username=self.username, password=self.password)
+        vote_url = reverse("polls:vote", args=(self.question.id,))
+        self.client.post(vote_url, {'choice': self.choice1.id})
+        response = self.client.post(vote_url, {'choice': self.choice2.id})
+        self.assertEqual(self.choice1.votes, 0)
+        self.assertEqual(self.choice2.votes, 1)
+
+    def test_user_can_change_vote(self):
+        """Authenticated users can change their vote."""
+        self.client.login(username=self.username, password=self.password)
+        vote_url = reverse("polls:vote", args=(self.question.id,))
+        self.client.post(vote_url, {'choice': self.choice1.id})
+        self.client.post(vote_url, {'choice': self.choice2.id})
+        self.assertEqual(self.choice1.votes, 0)
+        self.assertEqual(self.choice2.votes, 1)
+
+    def test_show_previous_vote(self):
+        """Show the user's previous vote when they view the poll."""
+        self.client.login(username=self.username, password=self.password)
+        self.client.post(reverse("polls:vote", args=(self.question.id,)), {'choice': self.choice1.id})
+        response = self.client.get(reverse("polls:detail", args=(self.question.id,)))
+        self.assertContains(response, 'checked', count=1)

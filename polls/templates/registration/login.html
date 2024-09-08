@@ -1,0 +1,22 @@
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'polls/style.css' %}">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+
+<html>
+<body>
+    <div class="login-container">
+        <div class="login-box">
+            <h2 class="login-title">Login</h2>
+
+            <form method="post" class="login-form">
+                {% csrf_token %}
+                <div class="form-group">
+                    {{ form.as_p }}
+                </div>
+                <button type="submit" class="login-btn">Login</button>
+                <input type="hidden" name="next" value="{{next}}"/>
+            </form>
+        </div>
+    </div>
+</body>

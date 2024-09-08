@@ -3,44 +3,86 @@
 <link rel="stylesheet" href="{% static 'polls/style.css' %}">
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 
-<div class="title-container">
-    <h1>KU Polls</h1>
-</div>
-
-{% if messages %}
-<ul class="messages">
-    {% for message in messages %}
-    <li class="message-item{% if message.tags %} {{ message.tags }}{% endif %}">
-        {{ message }}
-    </li>
-    {% endfor %}
-</ul>
-{% endif %}
-
-{% if latest_question_list %}
-    <div class="questions-container">
-        {% for question in latest_question_list %}
-            <div class="question-frame">
-                <a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a>
-                <p>
-                    Status:
-                    {% if question.can_vote %}
-                        Voting is open.
-                    {% elif not question.is_published %}
-                        Poll not published yet.
-                    {% else %}
-                        Voting is closed.
-                    {% endif %}
-                </p>
-                <div class="button-container">
-                    {% if question.can_vote %}
-                        <a href="{% url 'polls:detail' question.id %}" class="btn vote-btn">Vote</a>
-                    {% endif %}
-                    <a href="{% url 'polls:results' question.id %}" class="btn result-btn">Results</a>
-                </div>
-            </div>
-        {% endfor %}
+<header>
+    <div class="header-container">
+        <div class="auth-buttons">
+            {% if user.is_authenticated %}
+                <form action="{% url 'logout' %}" method="post" class="logout-form">
+                    {% csrf_token %}
+                    <button type="submit" class="button">Logout</button>
+                </form>
+            {% else %}
+                <a href="{% url 'login' %}?next={{ request.path }}" class="button">Login</a>
+            {% endif %}
+        </div>
     </div>
-{% else %}
-    <p>No polls are available.</p>
-{% endif %}
+</header>
+
+<div class="main-container">
+    <div class="content-container">
+        <div class="title-container">
+            <h1>KU Polls</h1>
+        </div>
+
+{% if user.is_authenticated %}
+    <ul class="messages">
+        <li class="message-item info flex-container">
+            <div class="welcome-message">
+                <img src="{% static 'polls/images/cat.gif' %}" alt="Cat" class="cat-gif">
+                Welcome, {{ user.username }}!
+            </div>
+
+            <form action="{% url 'logout' %}" method="post" class="logout-form">
+                {% csrf_token %}
+                <button type="submit" class="vote-button">Logout</button>
+            </form>
+        </li>
+    </ul>
+
+        {% else %}
+            <div class="messages">
+                <li class="message-item user logout">
+                    Please <a href="{% url 'login' %}?next={{request.path}}">log in</a> to vote.
+                </li>
+            </div>
+        {% endif %}
+
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li class="message-item{% if message.tags %} {{ message.tags }}{% endif %}">
+                {{ message }}
+            </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+        {% if latest_question_list %}
+            <div class="questions-container">
+                {% for question in latest_question_list %}
+                    <div class="question-frame">
+                        <a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a>
+                        <p>
+                            Status:
+                            {% if question.can_vote %}
+                                Voting is open.
+                            {% elif not question.is_published %}
+                                Poll not published yet.
+                            {% else %}
+                                Voting is closed.
+                            {% endif %}
+                        </p>
+                        <div class="button-container">
+                            {% if question.can_vote %}
+                                <a href="{% url 'polls:detail' question.id %}" class="btn vote-btn">Vote</a>
+                            {% endif %}
+                            <a href="{% url 'polls:results' question.id %}" class="btn result-btn">Results</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>No polls are available.</p>
+        {% endif %}
+    </div>
+</div>

@@ -5,6 +5,13 @@ body {
     color: white;
 }
 
+header {
+    width: 100%;
+    height: 60px;
+    background: transparent;
+    position: fixed;
+}
+
 .container {
     max-width: 800px;
     margin: 0 auto;
@@ -67,7 +74,7 @@ body {
     text-align: center;
 }
 
-.back-link, .results-link {
+.button, .results-link {
     display: inline-block;
     padding: 10px 15px;
     margin: 5px;
@@ -79,7 +86,7 @@ body {
     transition: background-color 0.3s ease;
 }
 
-.back-link:hover, .results-link:hover {
+.button:hover, .results-link:hover {
     background-color: #45a049;
 }
 
@@ -179,7 +186,7 @@ body {
     text-align: center;
 }
 
-.results-container .back-link {
+.results-container .button {
     display: inline-block;
     padding: 10px 15px;
     background-color: #4CAF50;
@@ -190,7 +197,7 @@ body {
     transition: background-color 0.3s ease;
 }
 
-.results-container .back-link:hover {
+.results-container .button:hover {
     background-color: #45a049;
 }
 
@@ -230,6 +237,7 @@ body {
     justify-content: flex-start;
     gap: 10px;
 }
+
 .messages {
     list-style-type: none;
     padding: 0;
@@ -258,7 +266,7 @@ body {
 .message-item.success {
     background-color: rgba(0, 255, 0, 0.2);
     border-left: 5px solid #4CAF50;
-    color: #4CAF50;
+    color: #ffffff;
 }
 
 .message-item.success:hover {
@@ -267,13 +275,13 @@ body {
 }
 
 .message-item.info {
-    background-color: rgba(0, 0, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0.2);
     border-left: 5px solid #007BFF;
-    color: #007BFF;
+    color: #ffffff;
 }
 
 .message-item.info:hover {
-    background-color: rgba(0, 0, 255, 0.3);
+    background-color: rgba(224, 224, 224, 0.3);
     border-color: #0056b3;
 }
 
@@ -297,6 +305,86 @@ body {
 }
 
 .error-message .emoji {
-    margin-right: 8px; /* Spacing between emoji and text */
-    font-size: 1.5rem; /* Slightly larger emoji size */
+    margin-right: 8px;
+    font-size: 1.5rem;
 }
+
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+}
+
+.login-box {
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    max-width: 400px;
+    width: 100%;
+    text-align: left;
+}
+
+.login-title {
+    font-size: 2.5rem;
+    text-align: center;
+    color: #ffffff;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+.login-form .form-group {
+    margin-bottom: 15px;
+}
+
+.login-form label {
+    color: #ffffff;
+    font-size: 1.2rem;
+}
+
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    border: none;
+    font-size: 1.1rem;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+    outline: none;
+    border: 2px solid #4CAF50;
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+}
+
+.cat-gif {
+    width: 20px;
+    height: auto;
+    border-radius: 5%;
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
+.flex-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.welcome-message {
+    display: flex;
+    align-items: center;
+}
+
+.logout-form {
+    margin-left: auto;
+}
+
+/*.auth-buttons {*/
+/*    display: flex;*/
+/*}*/
