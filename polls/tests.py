@@ -129,18 +129,21 @@ class QuestionModelTests(TestCase):
 
 class AuthenticatedVotingTests(TestCase):
     def setUp(self):
+        """Create a user, question, and two choices for testing."""
         self.user = User.objects.create_user(username='demo1', password='hackme11')
         self.question = create_question(question_text="Test Question", days=0)
         self.choice1 = Choice.objects.create(question=self.question, choice_text="Choice 1")
         self.choice2 = Choice.objects.create(question=self.question, choice_text="Choice 2")
 
     def test_login_required_to_vote(self):
+        """Unauthenticated users are redirected to the login page."""
         url = reverse("polls:vote", args=(self.question.id,))
         response = self.client.post(url, {'choice': self.choice1.id})
         self.assertEqual(response.status_code, 302)
         self.assertIn('login', response.url)
 
     def test_authenticated_user_can_vote(self):
+        """Authenticated users can vote on a poll."""
         self.client.login(username='demo1', password='hackme11')
         url = reverse("polls:vote", args=(self.question.id,))
         response = self.client.post(url, {'choice': self.choice1.id})
@@ -148,6 +151,7 @@ class AuthenticatedVotingTests(TestCase):
         self.assertIn('results', response.url)
 
     def test_user_can_vote_only_once(self):
+        """Authenticated users can only vote once."""
         self.client.login(username='demo1', password='hackme11')
         url = reverse("polls:vote", args=(self.question.id,))
         self.client.post(url, {'choice': self.choice1.id})
@@ -156,6 +160,7 @@ class AuthenticatedVotingTests(TestCase):
         self.assertEqual(self.choice2.votes, 1)
 
     def test_user_can_change_vote(self):
+        """Authenticated users can change their vote."""
         self.client.login(username='demo1', password='hackme11')
         url = reverse("polls:vote", args=(self.question.id,))
         self.client.post(url, {'choice': self.choice1.id})
@@ -164,12 +169,14 @@ class AuthenticatedVotingTests(TestCase):
         self.assertEqual(self.choice2.votes, 1)
 
     def test_show_previous_vote(self):
+        """Show the user's previous vote when they view the poll."""
         self.client.login(username='demo1', password='hackme11')
         self.client.post(reverse("polls:vote", args=(self.question.id,)), {'choice': self.choice1.id})
         response = self.client.get(reverse("polls:detail", args=(self.question.id,)))
         self.assertContains(response, 'checked', count=1)
 
     def test_login_logout(self):
+        """Test login and logout views."""
         login_url = reverse("login")
         response = self.client.post(login_url, {'username': 'demo1', 'password': 'hackme11'})
         self.assertEqual(response.status_code, 302)
