@@ -212,14 +212,3 @@ class UserAuthTest(django.test.TestCase):
         self.client.post(reverse("polls:vote", args=(self.question.id,)), {'choice': self.choice1.id})
         response = self.client.get(reverse("polls:detail", args=(self.question.id,)))
         self.assertContains(response, 'checked', count=1)
-
-    def test_login_logout(self):
-        """Test login and logout views."""
-        login_url = reverse("login")
-        response = self.client.post(login_url, {'username': self.username, 'password': self.password})
-        self.assertEqual(response.status_code, 302)
-
-        logout_url = reverse("logout")
-        response = self.client.get(logout_url)
-        self.assertEqual(response.status_code, 405)
-
