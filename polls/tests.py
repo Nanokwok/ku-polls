@@ -1,9 +1,11 @@
 import datetime
+
+from django.contrib.auth.models import User
 from django.test import TestCase
 from django.utils import timezone
 from django.urls import reverse
 from datetime import timedelta
-from .models import Question
+from .models import Question, Choice
 
 
 def create_question(question_text, days):
@@ -123,3 +125,55 @@ class QuestionModelTests(TestCase):
             pub_date=timezone.now() - timedelta(days=1)
         )
         self.assertTrue(question.can_vote())
+
+
+class AuthenticatedVotingTests(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username='demo1', password='hackme11')
+        self.question = create_question(question_text="Test Question", days=0)
+        self.choice1 = Choice.objects.create(question=self.question, choice_text="Choice 1")
+        self.choice2 = Choice.objects.create(question=self.question, choice_text="Choice 2")
+
+    def test_login_required_to_vote(self):
+        url = reverse("polls:vote", args=(self.question.id,))
+        response = self.client.post(url, {'choice': self.choice1.id})
+        self.assertEqual(response.status_code, 302)
+        self.assertIn('login', response.url)
+
+    def test_authenticated_user_can_vote(self):
+        self.client.login(username='demo1', password='hackme11')
+        url = reverse("polls:vote", args=(self.question.id,))
+        response = self.client.post(url, {'choice': self.choice1.id})
+        self.assertEqual(response.status_code, 302)
+        self.assertIn('results', response.url)
+
+    def test_user_can_vote_only_once(self):
+        self.client.login(username='demo1', password='hackme11')
+        url = reverse("polls:vote", args=(self.question.id,))
+        self.client.post(url, {'choice': self.choice1.id})
+        response = self.client.post(url, {'choice': self.choice2.id})
+        self.assertEqual(self.choice1.votes, 0)
+        self.assertEqual(self.choice2.votes, 1)
+
+    def test_user_can_change_vote(self):
+        self.client.login(username='demo1', password='hackme11')
+        url = reverse("polls:vote", args=(self.question.id,))
+        self.client.post(url, {'choice': self.choice1.id})
+        self.client.post(url, {'choice': self.choice2.id})
+        self.assertEqual(self.choice1.votes, 0)
+        self.assertEqual(self.choice2.votes, 1)
+
+    def test_show_previous_vote(self):
+        self.client.login(username='demo1', password='hackme11')
+        self.client.post(reverse("polls:vote", args=(self.question.id,)), {'choice': self.choice1.id})
+        response = self.client.get(reverse("polls:detail", args=(self.question.id,)))
+        self.assertContains(response, 'checked', count=1)
+
+    def test_login_logout(self):
+        login_url = reverse("login")
+        response = self.client.post(login_url, {'username': 'demo1', 'password': 'hackme11'})
+        self.assertEqual(response.status_code, 302)
+
+        logout_url = reverse("logout")
+        response = self.client.get(logout_url)
+        self.assertEqual(response.status_code, 405)
