@@ -34,24 +34,12 @@ class Choice(models.Model):
         return self.choice_text
 
 
-# class Votes(models.Model):
-#     """Model to store the votes of users."""
-#
-#     choice = models.ForeignKey(Choice, on_delete=models.CASCADE)
-#     user = models.ForeignKey(User, on_delete=models.CASCADE)
-#
-#     def __init__(self, *args, **kwargs):
-#         super().__init__(args, kwargs)
-#         self.votes_set = None
-#
-#     @property
-#     def votes(self):
-#         """Return the number of votes."""
-#         return self.votes_set.count()
-#
-#
-#     def __str__(self):
-#         """Return the user who voted."""
-#         return self.user
+class Vote(models.Model):
+    """Represents a user's selection of a specific choice in a question."""
 
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    choice = models.ForeignKey(Choice, on_delete=models.CASCADE)
 
+    def __str__(self):
+        """Return a string representation of the vote."""
+        return "{self.user} voted for {self.choice}"
