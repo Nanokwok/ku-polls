@@ -52,7 +52,7 @@
     ```
 8. Load initial data
     ```
-    python manage.py loaddata data/polls-v4.json
+    python3 manage.py loaddata data/polls-v4.json data/votes-v4.json data/users.json
     ```
 9. run server
     ```
