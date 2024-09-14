@@ -9,7 +9,7 @@ This app was created as part of the [Individual Software Process](
 https://cpske.github.io/ISP) course at [Kasetsart University](https://www.ku.ac.th).
 
 ## Installation
-[Installation](../../wiki/Installation) for how to install and run the server.
+[Installation.md](Installation.md) for how to install and run the server.
 
 ## Run the server
 1. change directory to the project root  
