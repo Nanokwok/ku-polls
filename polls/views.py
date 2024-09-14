@@ -1,6 +1,8 @@
 import logging
 
-from django.contrib.auth import user_logged_in, user_logged_out, user_login_failed
+from django.contrib.auth import (user_logged_in,
+                                 user_logged_out,
+                                 user_login_failed)
 from django.dispatch import receiver
 from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404, render
@@ -17,12 +19,14 @@ logger = logging.getLogger('polls')
 
 @receiver(user_logged_in)
 def user_logged_in_handler(sender, request, user, **kwargs):
-    logger.info(f'User {user.username} logged in from IP {get_client_ip(request)}.')
+    logger.info(f'User {user.username} '
+                f'logged in from IP {get_client_ip(request)}.')
 
 
 @receiver(user_logged_out)
 def user_logged_out_handler(sender, request, user, **kwargs):
-    logger.info(f'User {user.username} logged out from IP {get_client_ip(request)}.')
+    logger.info(f'User {user.username} '
+                f'logged out from IP {get_client_ip(request)}.')
 
 
 @receiver(user_login_failed)
@@ -35,8 +39,8 @@ class IndexView(generic.ListView):
     context_object_name = "latest_question_list"
 
     def get_queryset(self):
-        """Return the last five published questions (not including those set to be
-        published in the future)."""
+        """Return the last five published questions
+        (not including those set to be published in the future)."""
         return Question.objects.filter(
             pub_date__lte=timezone.now()
         ).order_by('-pub_date')[:5]
@@ -106,14 +110,17 @@ def vote(request, question_id):
         })
 
     try:
-        user_vote = Vote.objects.get(user=request.user, choice__question=question)
+        user_vote = (Vote.objects.get
+                     (user=request.user, choice__question=question))
         user_vote.choice = selected_choice
     except Vote.DoesNotExist:
-        user_vote = Vote.objects.create(user=request.user, choice=selected_choice)
+        user_vote = (Vote.objects.create
+                     (user=request.user, choice=selected_choice))
 
     user_vote.save()
 
-    messages.success(request, f"Your vote for '{selected_choice}' has been recorded.")
+    messages.success(request,
+                     f"Your vote for '{selected_choice}' has been recorded.")
     return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
 
 
