@@ -1,6 +1,5 @@
+# KU Polls: Online Survey Questions 
 [![Django CI](../../actions/workflows/django.yml/badge.svg)](../../actions/workflows/django.yml)
-
-## KU Polls: Online Survey Questions 
 
 An application to conduct online polls and surveys based
 on the [Django Tutorial project](https://docs.djangoproject.com/en/5.1/), with
@@ -13,13 +12,18 @@ https://cpske.github.io/ISP) course at [Kasetsart University](https://www.ku.ac.
 [Installation](../../wiki/Installation) for how to install and run the server.
 
 ## Run the server
-1. Change directory to the project root
+1. change directory to the project root  
 ```cd ku-polls```
-2. Run the server  
+2. activate the virtual environment  
+```venv\Scripts\activate``` (Windows)  
+```source venv/bin/activate``` (MacOS, Linux)
+3. run the server  
 ```python manage.py runserver```
-3. Close the server  
+4. close the server  
 ```Ctrl-C``` (Windows)  
 ```Control-C``` (MacOS, Linux)
+5. deactivate the virtual environment  
+```deactivate```
 
 ## Demo Admin Account
 | Username | Password |
@@ -42,3 +46,5 @@ All project documents are in the [Project Wiki](../../wiki/Home).
 - [Project Plan](../../wiki/Project%20Plan)
 - [Iteration1 Plan](../../wiki/Iteration%201%20Plan)
 - [Iteration2 Plan](../../wiki/Iteration%202%20Plan)
+- [Iteration3 Plan](../../wiki/Iteration%203%20Plan)
+- [Iteration4 Plan](../../wiki/Iteration%204%20Plan)
