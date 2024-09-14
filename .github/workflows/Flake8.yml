@@ -5,9 +5,9 @@ name: Run Flake8 and Flake8 doc strings
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ "main" ]
 
 permissions:
   contents: read
