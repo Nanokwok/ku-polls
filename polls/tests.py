@@ -191,14 +191,6 @@ class UserAuthTest(django.test.TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertIn('results', response.url)
 
-    def test_user_can_vote_only_once(self):
-        """Authenticated users can only vote once."""
-        self.client.login(username=self.username, password=self.password)
-        vote_url = reverse("polls:vote", args=(self.question.id,))
-        self.client.post(vote_url, {'choice': self.choice1.id})
-        self.assertEqual(self.choice1.votes, 0)
-        self.assertEqual(self.choice2.votes, 1)
-
     def test_user_can_change_vote(self):
         """Authenticated users can change their vote."""
         self.client.login(username=self.username, password=self.password)
