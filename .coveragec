@@ -1,0 +1,35 @@
+[run]
+
+branch = True
+
+cover_pylib = False
+
+# Files and directories to include during coverage run
+include =
+    polls/*.py
+
+# Files and directories to omit during coverage run
+omit =
+    # Python library files
+    /usr/lib/*
+    /usr/local/*
+    */.local/*
+    */env/*
+
+    # Package __init__.py files
+    */__init__.py
+
+    # Django migration files
+    */migrations/*
+
+    # Django project configuration files (e.g., "mysite" is your config directory)
+    mysite/*
+
+    # manage.py file
+    */manage.py
+
+[report]
+# Ignore __str__ and __repr__ methods in coverage reporting
+exclude_lines =
+    def __str__
+    def __repr__
